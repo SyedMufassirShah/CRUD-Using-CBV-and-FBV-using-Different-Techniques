@@ -182,3 +182,40 @@ class BookView(ViewSet):
             except Exception as e:
                 return Response({"error", str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({'error': 'Only Delete Method will be Entertained Here!'}, status=405)
+
+
+# ___________________________________________________________________________________________________________
+
+                        # Step-by-step DRF Conversion of Your Code
+# ___________________________________________________________________________________________________________
+
+from rest_framework import status, generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .models import Book
+from .serializer import BookSerializer
+
+
+
+class BookListCreateView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+
+class BookRetrieveView(generics.RetrieveAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    lookup_field = 'id'
+    
+class BookUpdateView(generics.UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    lookup_field = 'id'
+    
+class BookDeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    lookup_field = 'id'

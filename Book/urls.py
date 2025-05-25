@@ -32,15 +32,34 @@ urlpatterns = [
 
 
 
-# _____________________________________________________________________
+# # _____________________________________________________________________
 
-                    # Routing Via Simple Router
-# _____________________________________________________________________
+#                     # Routing Via Simple Router
+# # _____________________________________________________________________
 # from rest_framework.routers import SimpleRouter
 # from . import views
 # router = SimpleRouter(trailing_slash=False)
 
-# router.register('book', views.BookView, basename='book')
+# # router.register('books', views.BookView, basename='books')
 
 
 # urlpatterns = router.urls
+
+
+
+# __________________________________________________________________________
+
+                # Setting APIs for CBVs that extends generic views
+# __________________________________________________________________________
+
+
+from . import views
+from django.urls import path
+
+urlpatterns = [
+    path('book/', views.BookListCreateView.as_view(), name='BookListCreateView'),
+    path('book/<int:id>/', views.BookRetrieveView.as_view(), name='BookRetrieveView'),
+    path('book/<int:id>/update/', views.BookUpdateView.as_view(), name='BookUpdateView'),
+    path('book/<int:id>/delete/', views.BookDeleteView.as_view(), name="BookDetroyView"),
+    
+]
