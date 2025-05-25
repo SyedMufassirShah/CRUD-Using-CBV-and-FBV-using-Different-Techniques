@@ -10,5 +10,5 @@ from . import views
 
 urlpatterns = [
     path('menu-items/', views.menuItems, name='MenuItems-FBVs'),
-    path('menu-items/<int:id>', views.MenuItem, name='MenuItem-FBVs-ById'),
+    path('menu-items/<int:id>', views.singleMenuItem, name='MenuItem-FBVs-ById'),
 ]
