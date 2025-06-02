@@ -6,12 +6,16 @@ from .serializers import MenuItemSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
-
+from .paginations import MenuPagination
+from rest_framework.pagination import PageNumberPagination
 # Create your views here.
+
+
 class menuItemListCreateView(generics.ListCreateAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = MenuPagination
     
 class menuItemRetrieveView(generics.RetrieveAPIView):
     queryset = MenuItem.objects.all()
@@ -77,3 +81,29 @@ def singleMenuItem(request, id):
 #         return Response(MenuItemSerializer(menuItem).data)
 #     except MenuItem.DoesNotExist:
 #         return Response(status=404)
+
+
+@api_view(['POST'])
+def createMenuItem(request):
+    try:
+        serializer = MenuItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': 'Menu Item Created Successfully'},status=201)
+        return Response({'error': serializer.errors}, status=400)
+    except Exception as e:
+        return Response({'exception': str(e)}, status=500)
+    
+@api_view(['GET'])
+def getMenuItem(request):
+    try:
+        # items  = MenuItem.objects.select_related('category').all()
+        items = MenuItem.objects.all()
+        # Initialize the Paginator
+        paginator = PageNumberPagination()
+        paginator.page_size = 5
+        result_page = paginator.paginate_queryset(items, request)
+        serializer = MenuItemSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
+    except Exception as e:
+        return Response(str(e), status=500)

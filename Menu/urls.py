@@ -10,5 +10,8 @@ from . import views
 
 urlpatterns = [
     path('menu-items/', views.menuItems, name='MenuItems-FBVs'),
-    path('menu-items/<int:id>', views.singleMenuItem, name='MenuItem-FBVs-ById'),
+    path('menu-items/<int:id>', views.singleMenuItem, name='menuItem-FBVs-ById'),
+    path('menu-items/<int:id>', views.singleMenuItem, name='menuItem-FBVs-ById'),
+    path('menu-items/create', views.createMenuItem, name='createMenuItem-FBVs-ById'),
+    path('menu-items/paginated', views.getMenuItem, name='getMenuItem-FBVs-ById'),
 ]
